@@ -1,14 +1,12 @@
-import io
 import enum
-import json
 import struct
-import base64
-import hashlib
 import ipaddress
 import collections
 from typing import List, Any
 
 import dpkt
+
+from ts1.signature import Signature
 
 
 # Special value to denote GREASE in various placements in the Client Hello.
@@ -165,7 +163,7 @@ def parse_tls_str_list(data: bytes):
     return entries, struct.calcsize("!H") + list_length
 
 
-class TLSExtensionSignature():
+class TLSExtensionSignature(Signature):
     """
     Signature of a TLS extension.
 
@@ -652,7 +650,7 @@ class TLSExtensionApplicationSettings(TLSExtensionSignature,
         return TLSExtensionApplicationSettings(length, alpn)
 
 
-class TLSClientHelloSignature:
+class TLSClientHelloSignature(Signature):
     """
     Signature of a TLS Client Hello message.
 
@@ -787,18 +785,6 @@ class TLSClientHelloSignature:
             "extensions": list(map(lambda ext: ext.to_dict(), self.extensions))
         }
 
-    def canonicalize(self):
-        """Return the canonical form of this signature.
-
-        The canonical form is a string that can be compared with other
-        canonicalized strings. Two canonical strings are identical if the the
-        underlying signature are identical and vice versa.
-        """
-        return SignatureJSONEncoder().encode(self.to_dict())
-
-    def hash(self):
-        return hashlib.md5(self.canonicalize().encode("utf-8"))
-
     @classmethod
     def from_dict(cls, d):
         """Unserialize a TLSClientHelloSignature from a dict.
@@ -916,28 +902,6 @@ class TLSClientHelloSignature:
             comp_methods=comp_methods,
             extensions=extensions
         )
-
-
-class SignatureJSONEncoder(json.JSONEncoder):
-    """
-    Encodes Python objects into a canonical form.
-
-    The canonical form is the JSON encoding of the dict
-    form, with keys ordered alphabetically, byte objects encoded with bas64
-    and a single space after separators.
-    """
-    def __init__(self):
-        super().__init__(
-            sort_keys=True,
-            indent=None,
-            separators=(", ", ": ")
-        )
-
-    def default(self, o):
-        if type(o) is bytes:
-            return base64.b64encode(o).decode("ascii")
-
-        return json.JSONEncoder.default(self, o)
 
 
 def process_pcap(pcap) -> List[bytes]:
