@@ -58,7 +58,7 @@ class HTTP2SettingsFrame(HTTP2FrameSignature, frame_type="SETTINGS"):
             if k not in self.VALID_SETTINGS:
                 k = self.HTTP2_GREASE
             if k == self.HTTP2_GREASE:
-                v = 0
+                v = self.HTTP2_GREASE
             self.settings.append((k, v))
 
     def to_dict(self):
