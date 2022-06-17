@@ -957,7 +957,8 @@ def process_pcap(pcap) -> List[bytes]:
             "dst_ip": str(ipaddress.ip_address(ip.dst)),
             "src_port": tcp.sport,
             "dst_port": tcp.dport,
-            "client_hello": tcp.data
+            "client_hello": tcp.data,
+            "signature": TLSClientHelloSignature.from_bytes(tcp.data)
         })
 
     return client_hellos
