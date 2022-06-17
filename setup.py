@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="ts1",
-    version="0.1.0",
+    version="0.1.3",
     author="lwthiker",
     author_email="lwt@lwthiker.com",
     description="TLS and HTTP signature and fingerprint library",
@@ -21,7 +21,6 @@ setuptools.setup(
         "Operating System :: OS Independent"
     ],
     install_requires=["dpkt"],
-    package_dir={"": "ts1"},
-    packages=setuptools.find_packages(where="src"),
+    packages=["ts1"],
     python_requires=">=3.2"
 )
