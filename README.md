@@ -95,8 +95,10 @@ import ts1
 with open("/path/to/pcap", "rb") as pcap:
     for tls_client in ts1.tls.process_pcap(pcap):
         print("Client IP: {}".format(tls_client["src_ip"]))
+        # TLSSignature object
+        signature = tls_client["signature"]
         print("Client' TLS signature SHA1: {}".format(
-            tls_client["signature"].hash().hexdigest()
+            signature.hash().hexdigest()
         ))
 ```
 
@@ -163,7 +165,7 @@ which, as in the TLS case, is converted to a canonical form and hashed to produc
 ### Usage
 `ts1.http2.HTTP2Signature` is a class that encodes an HTTP/2 signature. It has two important functions:
 * `HTTP2Signature.canonicalize()` will produce the canonical JSON form.
-* `TLSSignaturHTTP2Signature.hash()` will return the SHA1 hash as returned by `hashlib.sha1`
+* `HTTP2Signature.hash()` will return the SHA1 hash as returned by `hashlib.sha1`
 
 TS1 comes with a utility `process_nghttpd_log()` function to extract signatures from nghttpd log (nghttpd is a small HTTP/2 server):
 ```python
@@ -172,7 +174,9 @@ import ts1
 with open("/path/to/log", "r") as logfile:
     for http2_client in ts1.http2.process_nghttpd_log(logfile.read()):
         print("Client ID: {}".format(http2_client["client_id"]))
+        # HTTP2Signature object
+        signature = http2_client["signature"]
         print("Client's HTTP/2 signature SHA1: {}".format(
-            http2_client["signature"].hash().hexdigest()
+            signature.hash().hexdigest()
         ))
 ```
