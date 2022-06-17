@@ -3,20 +3,10 @@ import base64
 import hashlib
 
 
-class SignatureJSONEncoder(json.JSONEncoder):
+class BytesJSONEncoder(json.JSONEncoder):
     """
-    Encodes Python objects into a canonical form.
-
-    The canonical form is the JSON encoding of the dict
-    form, with keys ordered alphabetically, byte objects encoded with bas64
-    and a single space after separators.
+    A JSON encoder that can handle bytes objects by encoding them in base64.
     """
-    def __init__(self):
-        super().__init__(
-            sort_keys=True,
-            indent=None,
-            separators=(", ", ": ")
-        )
 
     def default(self, o):
         # Encode byte objects to base64
@@ -34,14 +24,32 @@ class Signature:
     def to_dict(self):
         raise NotImplementedError()
 
+    def to_json(self, **kwargs):
+        """Serialize the signature to JSON format.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional arguments to json.dumps()
+        """
+        return BytesJSONEncoder(**kwargs).encode(self.to_dict())
+
     def canonicalize(self):
         """Return the canonical form of this signature.
 
         The canonical form is a string that can be compared with other
         canonicalized strings. Two canonical strings are identical if the the
         underlying signature are identical and vice versa.
+
+        The canonical form is the JSON encoding of the dict
+        form, with keys ordered alphabetically, byte objects encoded with bas64
+        and a single space after separators.
         """
-        return SignatureJSONEncoder().encode(self.to_dict())
+        return BytesJSONEncoder(
+            sort_keys=True,
+            indent=None,
+            separators=(", ", ": ")
+        ).encode(self.to_dict())
 
     def hash(self):
         """Return a hash encoding all the information in the signature.
