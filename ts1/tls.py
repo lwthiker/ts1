@@ -904,6 +904,23 @@ class TLSClientHelloSignature(Signature):
         )
 
 
+class TLSSignature(Signature):
+    """
+    Signature of a TLS client.
+
+    Currently the signature is built out of the TLS client hello message only,
+    which is encoded in the TLSClientHelloSignature class.
+    """
+    def __init__(self, client_hello: TLSClientHelloSignature):
+        self.client_hello = client_hello
+
+    def to_dict(self):
+        """Serialize to a dict object."""
+        return {
+            "client_hello": self.client_hello.to_dict()
+        }
+
+
 def process_pcap(pcap) -> List[bytes]:
     """Extract TLS Client Hello records from a pcap file.
 
@@ -958,7 +975,9 @@ def process_pcap(pcap) -> List[bytes]:
             "src_port": tcp.sport,
             "dst_port": tcp.dport,
             "client_hello": tcp.data,
-            "signature": TLSClientHelloSignature.from_bytes(tcp.data)
+            "signature": TLSSignature(
+                client_hello=TLSClientHelloSignature.from_bytes(tcp.data)
+            )
         })
 
     return client_hellos
