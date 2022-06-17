@@ -5,8 +5,8 @@ A fingerprint in this context is a string that identifies a web client.
 Unlike a cookie, it does not distinguish between web users, but rather between different client software, e.g. different browsers, command line utilities and web libraries.
 
 TS1 can currently calculate two kinds of signatures:
-* TLS signature, based on the TLS parameters in the client's TLS client hello message. Read more about TLS fingerprinting here.
-* HTTP/2 signature, based on the HTTP/2 parameters in use by the client. Read more about HTTP/2 fingerprinting here.
+* TLS signature, based on the TLS parameters in the client's TLS client hello message. [Read more about TLS fingerprinting](https://lwthiker.com/networks/2022/06/17/tls-fingerprinting.html).
+* HTTP/2 signature, based on the HTTP/2 parameters in use by the client. [Read more about HTTP/2 fingerprinting](https://lwthiker.com/networks/2022/06/17/http2-fingerprinting.html).
 
 TS1 was created as part of the work on [curl-impersonate](https://github.com/lwthiker/curl-impersonate), a [curl](https://github.com/curl/curl) fork that fakes its own TLS and HTTP/2 fingerprint to look like a browser.
 
