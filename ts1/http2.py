@@ -46,7 +46,7 @@ class HTTP2SettingsFrame(HTTP2FrameSignature, frame_type="SETTINGS"):
     # Some browsers (e.g. Chrome 98) added a non-existent, randomly-generated
     # settings key to the SETTINGS frame. This is denoted as HTTP2_GREASE due
     # to similarity with TLS GREASE
-    HTTP2_GREASE = 0
+    HTTP2_GREASE = "GREASE"
 
     # See RFC7540, section "Defined SETTINGS parameters"
     VALID_SETTINGS = [1, 2, 3, 4, 5, 6]
@@ -59,7 +59,10 @@ class HTTP2SettingsFrame(HTTP2FrameSignature, frame_type="SETTINGS"):
                 k = self.HTTP2_GREASE
             if k == self.HTTP2_GREASE:
                 v = self.HTTP2_GREASE
-            self.settings.append((k, v))
+            self.settings.append({
+                "id": k,
+                "value": v
+            })
 
     def to_dict(self):
         d = super().to_dict()

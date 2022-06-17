@@ -115,18 +115,18 @@ The HTTP/2 frames are encoded into a JSON format (truncated here for clearness):
             "frame_type": "SETTINGS",
             "stream_id": 0,
             "settings": [
-                [
-                    1,
-                    65536
-                ],
-                [
-                    4,
-                    131072
-                ],
-                [
-                    5,
-                    16384
-                ]
+                {
+                    "id": 1,
+                    "value": 65536
+                },
+                {
+                    "id": 4,
+                    "value": 131072
+                },
+                {
+                    "id": 5,
+                    "value": 16384
+                }
             ]
         },
         {
@@ -159,7 +159,7 @@ The HTTP/2 frames are encoded into a JSON format (truncated here for clearness):
 
 which, as in the TLS case, is converted to a canonical form and hashed to produce a SHA1 hash:
 ```
-41f208d6edeb08cc6f6afe9a5e9229ba0e3a9ef2
+c9bb208868a10863867841a2e5bcb3b903719784
 ```
 
 ### Usage
