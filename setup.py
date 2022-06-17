@@ -1,16 +1,19 @@
 import setuptools
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setuptools.setup(
     name="ts1",
     version="0.1.0",
     author="lwthiker",
     author_email="lwt@lwthiker.com",
-    description="Process and compare browser TLS & HTTP fingerprints",
-    long_description="file: README.md",
+    description="TLS and HTTP signature and fingerprint library",
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/lwthiker/websig",
+    url="https://github.com/lwthiker/ts1",
     project_urls={
-        "Bug Tracker": "https://github.com/lwthiker/websig/issues"
+        "Bug Tracker": "https://github.com/lwthiker/ts1/issues"
     },
     classifiers=[
         "Programming Language :: Python :: 3",
