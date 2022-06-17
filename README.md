@@ -12,6 +12,12 @@ TS1 was created as part of the work on [curl-impersonate](https://github.com/lwt
 
 **Important note**: TS1 is currently in an alpha stage. The signatures are likely to change slightly in the coming future before it stabilizies.
 
+### Installation
+
+```
+pip install ts1-signatures
+```
+
 ## TLS fingerprint
 
 Each web client has a unique TLS fingerprint due to the multitude of ways of configuring the TLS protocol.
